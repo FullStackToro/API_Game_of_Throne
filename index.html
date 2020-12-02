@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Of Throne</title>
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            var casas = [{
+                img: 'stark.jpg',
+                house: "House Karstark of Karhold",
+                id_local: 'local1',
+                id_house: 0
+            }, {
+                img: 'targaryen.jpg',
+                house: "House Targaryen of King's Landing",
+                id_local: 'local2',
+                id_house: 0
+            }, {
+                img: 'lannister.jpg',
+                house: "House Lannister of Casterly Rock",
+                id_local: 'local3',
+                id_house: 0
+            }, {
+                img: 'baratheon.png',
+                house: "House Baratheon of Storm's End",
+                id_local: 'local4',
+                id_house: 0
+            }];
+            for (i = 0; i < casas.length; i++) {
+                $('.houses').append("<img id='" + casas[i].id_local + "' class='img_houses' src='" + casas[i].img + "' alt='img'>");
+
+            }
+            for (let i = 1; i <= 444; i++) {
+                $.get('https://anapioficeandfire.com/api/houses/' + i, function(res) {
+                    for (let j = 0; j < casas.length; j++) {
+                        if (casas[j].house == res.name) {
+                            casas[j].id_house = i;
+                        }
+                    }
+                    // console.log(res)
+                })
+            }
+
+            $('img').click(function() {
+                var id_temp = $(this).attr('id');
+
+                for (let j = 0; j < casas.length; j++) {
+                    if (casas[j].id_local == id_temp) {
+                        id_temp = casas[j].id_house;
+                    }
+                }
+
+
+                $.get('https://anapioficeandfire.com/api/houses/' + id_temp, function(res) {
+
+                    var printDetalles = [{
+                        name: "Name",
+                        call: res.name,
+                        clase: '.name'
+                    }, {
+                        name: "Region",
+                        call: res.region,
+                        clase: ".region"
+                    }, {
+                        name: "Armas",
+                        call: res.coatOfArms,
+                        clase: ".armas"
+                    }, {
+                        name: "Fundada",
+                        call: res.founded,
+                        clase: ".fundada"
+                    }, {
+                        name: "Palabra Clave",
+                        call: res.words,
+                        clase: ".palabras"
+                    }, {
+                        name: "Títulos",
+                        call: res.titles,
+                        clase: ".titulos"
+                    }]
+                    console.log(res)
+
+                    //es posible definir las etiquetas de forma previa para mejorar el código
+                    // Queda pendiente por tiempo
+
+                    for (let i = 0; i < printDetalles.length; i++) {
+                        var print = "";
+                        print += printDetalles[i].call; -
+                        console.log(print)
+                        var cl2 = printDetalles[i].clase; + "h2"
+                        $(cl2).html("<h2>" + printDetalles[i].name + "</h2>");
+                        var cl = printDetalles[i].clase; + "p"
+                        $(cl).append("<p>" + print + "</p>");
+                    }
+                }, "json");
+            });
+
+        });
+    </script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .container {
+            padding: 10px 30px;
+            width: 95%;
+        }
+        
+        .houses {
+            text-align: center;
+        }
+        
+        .img_houses {
+            width: 20%;
+            height: 11vmax;
+            margin: 1vmax;
+        }
+        
+        .contenido {
+            text-align: left;
+            border: 3px solid black;
+            height: 500px;
+            padding: 15px 55px;
+            background: radial-gradient(#055A5A, #083232, #061515);
+            border-radius: 20px;
+        }
+        
+        .contenido h2 {
+            display: inline-block;
+            left: 0px;
+            padding: 10px 20px;
+            width: 150px;
+            background-color: white;
+            color: #083232;
+            border-radius: 10px;
+        }
+        
+        .contenido p {
+            display: inline-block;
+            padding: 15px;
+            color: white;
+        }
+        
+        .et,
+        h1 {
+            margin: 20px 0px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>GAME OF THRONE</h1>
+        <P>Haga click en la imagen para visualizar los detalles de la casa. Esto es posible gracias a la información extraida desde la API facilitada por el equipo de Codin Dojo en colaboración con InforCAP y Sence.
+
+        </P>
+        <div class="houses">
+
+        </div>
+        <h1>House Details</h1>
+        <div class="contenido">
+
+            <div class="et name">
+                <h2></h2>
+                <p></p>
+            </div>
+            <div class="et region">
+                <h2></h2>
+                <p></p>
+            </div>
+            <div class="et armas">
+                <h2></h2>
+                <p></p>
+            </div>
+            <div class="et fundada">
+                <h2></h2>
+                <p></p>
+            </div>
+            <div class="et titulos">
+                <h2></h2>
+                <p></p>
+            </div>
+            <div class="et palabras">
+                <h2></h2>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
